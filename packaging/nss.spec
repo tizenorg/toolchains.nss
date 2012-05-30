@@ -34,6 +34,7 @@ Source8:          system-pkcs11.txt
 Source9:          setup-nsssysinit.sh
 Source11:         nss-prelink.conf
 Source12:         %{name}-pem-20101125.tar.bz2
+Source1001: packaging/nss.manifest 
 
 Patch1:           nss-no-rpath.patch
 Patch2:           nss-nolocalsql.patch
@@ -132,6 +133,7 @@ low level services.
 %patch12 -p1
 
 %build
+cp %{SOURCE1001} .
 
 FREEBL_NO_DEPEND=1
 export FREEBL_NO_DEPEND
@@ -346,6 +348,7 @@ done
 
 
 %files
+%manifest nss.manifest
 %defattr(-,root,root)
 /%{_lib}/libnss3.so
 /%{_lib}/libnssutil3.so
@@ -368,6 +371,7 @@ done
 
 
 %files sysinit
+%manifest nss.manifest
 %defattr(-,root,root)
 /%{_lib}/libnsssysinit.so
 %config(noreplace) %{_sysconfdir}/pki/nssdb/cert9.db
@@ -377,10 +381,12 @@ done
 
 
 %files softokn-freebl
+%manifest nss.manifest
 /%{_lib}/libfreebl3.so
 #/%{_lib}/libfreebl3.chk
 
 %files tools
+%manifest nss.manifest
 %defattr(-,root,root)
 %{_bindir}/certutil
 %{_bindir}/cmsutil
@@ -404,6 +410,7 @@ done
 
 
 %files devel
+%manifest nss.manifest
 %defattr(-,root,root)
 %{_libdir}/libnss3.so
 %{_libdir}/libnssutil3.so
@@ -507,6 +514,7 @@ done
 
 
 %files pkcs11-devel
+%manifest nss.manifest
 %defattr(-, root, root)
 %{_includedir}/nss3/nssbase.h
 %{_includedir}/nss3/nssbaset.h
