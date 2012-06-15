@@ -1,6 +1,7 @@
 %define nspr_version 4.7
 %define unsupported_tools_directory %{_libdir}/nss/unsupported-tools
 
+
 Summary:          Network Security Services
 Name:             nss
 Version:          3.12.9
@@ -12,7 +13,6 @@ Requires:         nspr >= %{nspr_version}
 Requires:         nss-softokn-freebl%{_isa} >= %{version}
 Requires:         nss-system-init
 Requires:         sqlite
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:    nspr-devel >= %{nspr_version}
 BuildRequires:    sqlite-devel
 BuildRequires:    zlib-devel
@@ -21,7 +21,7 @@ BuildRequires:    gawk
 BuildRequires:    psmisc
 BuildRequires:    perl
 
-Source0:          %{name}-%{version}-stripped.tar.bz2
+Source0:          %{name}-%{version}.tar.gz
 
 Source1:          nss.pc.in
 Source2:          nss-config.in
@@ -89,7 +89,6 @@ Summary:          System NSS Initilization
 Group:            System/Base
 Provides:         nss-system-init
 Requires:         nss = %{version}-%{release}
-#Requires(post):   coreutils
 
 %description sysinit
 Default Operating System module that manages applications loading
@@ -127,9 +126,6 @@ low level services.
 %patch2 -p0
 %patch3 -p1
 %patch6 -p0 -b .libpem
-#%patch9 -p0
-#%patch10 -p0
-#%patch11 -p0
 %patch12 -p1
 
 %build
