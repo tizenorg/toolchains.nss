@@ -128,6 +128,7 @@ low level services.
 %patch3 -p1
 %patch6 -p0 -b .libpem
 %patch12 -p1
+%patch13 -p1
 
 %build
 cp %{SOURCE1001} .
