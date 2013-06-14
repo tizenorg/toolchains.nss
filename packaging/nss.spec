@@ -44,6 +44,7 @@ Patch9:           nss-sysinit.patch
 Patch10:          nss-sysinit-2.patch
 Patch11:	  nss-bug524013.patch
 Patch12:	  nss-3.12.9-linux31.patch
+Patch13:	  nss-3.12.9-linux37.patch
 
 %description
 Network Security Services (NSS) is a set of libraries designed to
