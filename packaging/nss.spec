@@ -371,7 +371,6 @@ cp LICENSE %{buildroot}/usr/share/license/nss-sysinit
 /usr/share/license/nss
 
 %files sysinit
-%manifest nss-sysinit.manifest
 %defattr(-,root,root)
 /%{_lib}/libnsssysinit.so
 %config(noreplace) %{_sysconfdir}/pki/nssdb/cert9.db
@@ -379,8 +378,10 @@ cp LICENSE %{buildroot}/usr/share/license/nss-sysinit
 %config(noreplace) %{_sysconfdir}/pki/nssdb/pkcs11.txt
 %{_bindir}/setup-nsssysinit.sh
 /usr/share/license/nss-sysinit
+%manifest nss-sysinit.manifest
 
 %files softokn-freebl
+%defattr(-, root, root)
 /%{_lib}/libfreebl3.so
 #/%{_lib}/libfreebl3.chk
 /usr/share/license/nss-softokn-freebl
