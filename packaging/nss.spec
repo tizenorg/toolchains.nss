@@ -1,7 +1,6 @@
 %define nspr_version 4.7
 %define unsupported_tools_directory %{_libdir}/nss/unsupported-tools
 
-
 Summary:          Network Security Services
 Name:             nss
 Version:          3.12.9
@@ -13,6 +12,7 @@ Requires:         nspr >= %{nspr_version}
 Requires:         nss-softokn-freebl%{_isa} >= %{version}
 Requires:         nss-system-init
 Requires:         sqlite
+BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:    nspr-devel >= %{nspr_version}
 BuildRequires:    sqlite-devel
 BuildRequires:    zlib-devel
@@ -21,7 +21,7 @@ BuildRequires:    gawk
 BuildRequires:    psmisc
 BuildRequires:    perl
 
-Source0:          %{name}-%{version}.tar.gz
+Source0:          %{name}-%{version}-stripped.tar.bz2
 
 Source1:          nss.pc.in
 Source2:          nss-config.in
@@ -34,7 +34,6 @@ Source8:          system-pkcs11.txt
 Source9:          setup-nsssysinit.sh
 Source11:         nss-prelink.conf
 Source12:         %{name}-pem-20101125.tar.bz2
-Source1001: packaging/nss.manifest 
 
 Patch1:           nss-no-rpath.patch
 Patch2:           nss-nolocalsql.patch
@@ -43,7 +42,7 @@ Patch6:           nss-enable-pem.patch
 Patch9:           nss-sysinit.patch
 Patch10:          nss-sysinit-2.patch
 Patch11:	  nss-bug524013.patch
-Patch12:	  nss-3.12.9-linux31.patch
+Patch13:	  nss-kernel-3.x.patch
 
 %description
 Network Security Services (NSS) is a set of libraries designed to
@@ -126,10 +125,12 @@ low level services.
 %patch2 -p0
 %patch3 -p1
 %patch6 -p0 -b .libpem
-%patch12 -p1
+#%patch9 -p0
+#%patch10 -p0
+#%patch11 -p0
+%patch13 -p1
 
 %build
-cp %{SOURCE1001} .
 
 FREEBL_NO_DEPEND=1
 export FREEBL_NO_DEPEND
@@ -325,6 +326,10 @@ do
   %{__install} -m 644 $file $RPM_BUILD_ROOT/%{_includedir}/nss3
 done
 
+mkdir -p %{buildroot}/usr/share/license
+cp LICENSE %{buildroot}/usr/share/license/nss
+cp LICENSE %{buildroot}/usr/share/license/nss-softokn-freebl
+cp LICENSE %{buildroot}/usr/share/license/nss-sysinit
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
@@ -344,7 +349,6 @@ done
 
 
 %files
-%manifest nss.manifest
 %defattr(-,root,root)
 /%{_lib}/libnss3.so
 /%{_lib}/libnssutil3.so
@@ -364,25 +368,25 @@ done
 %config(noreplace) %{_sysconfdir}/pki/nssdb/secmod.db
 %dir %{_sysconfdir}/prelink.conf.d
 %{_sysconfdir}/prelink.conf.d/nss-prelink.conf
-
+/usr/share/license/nss
 
 %files sysinit
-%manifest nss.manifest
 %defattr(-,root,root)
 /%{_lib}/libnsssysinit.so
 %config(noreplace) %{_sysconfdir}/pki/nssdb/cert9.db
 %config(noreplace) %{_sysconfdir}/pki/nssdb/key4.db
 %config(noreplace) %{_sysconfdir}/pki/nssdb/pkcs11.txt
 %{_bindir}/setup-nsssysinit.sh
-
+/usr/share/license/nss-sysinit
+%manifest nss-sysinit.manifest
 
 %files softokn-freebl
-%manifest nss.manifest
+%defattr(-, root, root)
 /%{_lib}/libfreebl3.so
 #/%{_lib}/libfreebl3.chk
+/usr/share/license/nss-softokn-freebl
 
 %files tools
-%manifest nss.manifest
 %defattr(-,root,root)
 %{_bindir}/certutil
 %{_bindir}/cmsutil
@@ -406,7 +410,6 @@ done
 
 
 %files devel
-%manifest nss.manifest
 %defattr(-,root,root)
 %{_libdir}/libnss3.so
 %{_libdir}/libnssutil3.so
@@ -510,7 +513,6 @@ done
 
 
 %files pkcs11-devel
-%manifest nss.manifest
 %defattr(-, root, root)
 %{_includedir}/nss3/nssbase.h
 %{_includedir}/nss3/nssbaset.h

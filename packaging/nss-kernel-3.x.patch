@@ -1,6 +1,19 @@
-diff -ruNa nss-3.12.9.orig/mozilla/security/coreconf/Linux3.1.mk nss-3.12.9/mozilla/security/coreconf/Linux3.1.mk
---- nss-3.12.9.orig/mozilla/security/coreconf/Linux3.1.mk	1970-01-01 08:00:00.000000000 +0800
-+++ nss-3.12.9/mozilla/security/coreconf/Linux3.1.mk	2012-04-18 10:10:28.543922488 +0800
+From fda48f118fb8a9fadbc2b202d194fae2bcbdba84 Mon Sep 17 00:00:00 2001
+From: UkJung Kim <ujkim@samsung.com>
+Date: Tue, 23 Oct 2012 18:41:24 +0900
+Subject: [PATCH] Fixed build failure with kernel 3.x
+
+---
+ mozilla/security/coreconf/Linux3.mk | 48 +++++++++++++++++++++++++++++++++++++
+ mozilla/security/coreconf/arch.mk   |  6 ++++-
+ 2 files changed, 53 insertions(+), 1 deletion(-)
+ create mode 100644 mozilla/security/coreconf/Linux3.mk
+
+diff --git a/mozilla/security/coreconf/Linux3.mk b/mozilla/security/coreconf/Linux3.mk
+new file mode 100644
+index 0000000..4a6cc1e
+--- /dev/null
++++ b/mozilla/security/coreconf/Linux3.mk
 @@ -0,0 +1,48 @@
 +#
 +# ***** BEGIN LICENSE BLOCK *****
@@ -50,3 +63,23 @@ diff -ruNa nss-3.12.9.orig/mozilla/security/coreconf/Linux3.1.mk nss-3.12.9/mozi
 +PROCESS_MAP_FILE = grep -v ';-' $< | \
 +        sed -e 's,;+,,' -e 's; DATA ;;' -e 's,;;,,' -e 's,;.*,;,' > $@
 +
+diff --git a/mozilla/security/coreconf/arch.mk b/mozilla/security/coreconf/arch.mk
+index bd3c02c..4cbe437 100644
+--- a/mozilla/security/coreconf/arch.mk
++++ b/mozilla/security/coreconf/arch.mk
+@@ -153,7 +153,11 @@ endif
+ ifeq ($(OS_ARCH),Linux)
+     OS_RELEASE := $(subst ., ,$(OS_RELEASE))
+     ifneq ($(words $(OS_RELEASE)),1)
+-	OS_RELEASE := $(word 1,$(OS_RELEASE)).$(word 2,$(OS_RELEASE))
++	ifeq ($(word 1,$(OS_RELEASE)),3)
++	    OS_RELEASE := 3
++	else
++	    OS_RELEASE := $(word 1,$(OS_RELEASE)).$(word 2,$(OS_RELEASE))
++	endif
+     endif
+ endif
+ 
+-- 
+1.7.11.3
+

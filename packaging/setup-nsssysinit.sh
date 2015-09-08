@@ -7,6 +7,7 @@
 # It is invoked at nss-sysinit post install time with argument on
 # and at nss-sysinit pre uninstall with argument off. 
 #
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/usr/sbin:/bin:/usr/bin
 usage()
 {
   cat <<EOF
