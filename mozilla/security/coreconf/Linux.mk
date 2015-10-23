@@ -153,6 +153,7 @@ DSO_LDOPTS		= -shared $(ARCHFLAG)
 ZDEFS_FLAG		= -Wl,-z,defs
 DSO_LDOPTS		+= $(if $(findstring 2.11.90.0.8,$(shell ld -v)),,$(ZDEFS_FLAG))
 LDFLAGS			+= $(ARCHFLAG)
+LDFLAGS			+= -pie
 
 # On Maemo, we need to use the -rpath-link flag for even the standard system
 # library directories.

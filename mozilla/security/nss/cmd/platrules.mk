@@ -35,6 +35,10 @@
 #
 # ***** END LICENSE BLOCK *****
 
+
+# for ASLR
+CFLAGS       += -fPIE
+
 show:
 	@echo "DEFINES 		= ${DEFINES}"
 	@echo "EXTRA_LIBS	= >$(EXTRA_LIBS)<"

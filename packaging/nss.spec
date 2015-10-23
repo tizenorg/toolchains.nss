@@ -5,7 +5,7 @@ Summary:          Network Security Services
 Name:             nss
 Version:          3.12.9
 Release:          3
-License:          MPLv1.1 or GPLv2+ or LGPLv2+
+License:          MPL-1.1 or GPL-2.0+ or LGPL-2.1+
 URL:              http://www.mozilla.org/projects/security/pki/nss/
 Group:            System/Libraries
 Requires:         nspr >= %{nspr_version}
@@ -42,6 +42,7 @@ Patch6:           nss-enable-pem.patch
 Patch9:           nss-sysinit.patch
 Patch10:          nss-sysinit-2.patch
 Patch11:	  nss-bug524013.patch
+Patch12:	  nss-bug972450.patch
 Patch13:	  nss-kernel-3.x.patch
 
 %description
@@ -128,6 +129,7 @@ low level services.
 #%patch9 -p0
 #%patch10 -p0
 #%patch11 -p0
+%patch12 -p1
 %patch13 -p1
 
 %build
@@ -369,6 +371,7 @@ cp LICENSE %{buildroot}/usr/share/license/nss-sysinit
 %dir %{_sysconfdir}/prelink.conf.d
 %{_sysconfdir}/prelink.conf.d/nss-prelink.conf
 /usr/share/license/nss
+%manifest nss.manifest
 
 %files sysinit
 %defattr(-,root,root)
